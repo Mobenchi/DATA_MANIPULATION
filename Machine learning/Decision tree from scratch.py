@@ -63,6 +63,26 @@ class DecisionTree:
     
 
     def _information_gain(self, y, X_column, thr):
+        #parent entropy
+        parent_entropy = self._entropy(y)
+
+
+        #create children
+        left_idx, right_idx = self._split(X_column, thr)
+
+        #calculate the weighted avg entropy of children 
+
+
+        #calculate the IG
+
+
+    def _split(self, X_column, split_thresh): 
+
+
+    def _entropy(self, y):
+        hist = np.bincount(y)
+        ps = hist / len(y)
+        return -np.sum([p * np.log(p) for p in ps if p>0])
 
 
     def  _most_common_label(self, y):
