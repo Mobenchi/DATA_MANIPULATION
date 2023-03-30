@@ -41,7 +41,11 @@ class DecisionTree:
         #find the best split
         best_feature, best_thresh = self._best_split(X, y, feat_idxs)
         
-        #create child nodes 
+        #create child nodes
+        left_idxs, right_idxs =  self._split(X[:, best_feature], best_thresh)
+        left = self._grow_tree(X[left_idxs, :], y[left_idxs], depth+1)
+        right = self._grow_tree(X[right_idxs, :], y[right_idxs], depth+1)
+        return Node(best_feature, best_thresh, left, right)
 
     def _best_split(self, X, y, feat_idxs):
         best_gain = -1
@@ -68,16 +72,26 @@ class DecisionTree:
 
 
         #create children
-        left_idx, right_idx = self._split(X_column, thr)
+        left_idxs, right_idxs = self._split(X_column, thr)
 
+        if len(left_idxs) == 0 or len(right_idxs) == 0:
+            return 0
+        
         #calculate the weighted avg entropy of children 
-
+        n = len(y)
+        n_l, n_r = len(left_idxs), len(right_idxs)
+        e_l, e_r = self._entropy(y[left_idxs]), self._entropy(y[right_idxs])
+        child_entropy = (n_l/n) * e_l + (n_r/n) * e_r
 
         #calculate the IG
+        information_gain = parent_entropy - child_entropy
+        return information_gain
 
 
     def _split(self, X_column, split_thresh): 
-
+        left_idxs = np.argwhere(X_column<=split_thresh).flatten()
+        right_idx = np.argwhere(X_column<=split_thresh).flatten()
+        return left_idxs, right_idx
 
     def _entropy(self, y):
         hist = np.bincount(y)
