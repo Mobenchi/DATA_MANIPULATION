@@ -22,7 +22,7 @@ Precision = metrics.precision_score(actual, predicted)
 Sensitivity_recall = metrics.recall_score(actual, predicted)
 
 
-specificity = metrics.recall_score(actual, predicted, pos_lable=0)
+Specificity = metrics.recall_score(actual, predicted, pos_lable=0)
 
 #calculate the recall_score of predicted data
 F1_score = metrics.f1_score(actual, predicted)
